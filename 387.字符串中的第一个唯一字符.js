@@ -33,6 +33,9 @@ var firstUniqChar = function(s) {
 
   /**
    * 官方一：哈希表存储频数
+   * 105/105 cases passed (92 ms)
+   * Your runtime beats 78.95 % of javascript submissions
+   * Your memory usage beats 59.07 % of javascript submissions (44.3 MB)
    */
   // const map = {}; // 存储每个字符出现的次数
   // const len = s.length;
@@ -75,9 +78,26 @@ var firstUniqChar = function(s) {
   // return res === Infinity ? -1 : res;
 
   /**
-   * 官方三：队列
+   * 官方三：队列 TODO
    */
-};
-// firstUniqChar('leetcode');
-// @lc code=end
 
+  /**
+   * 另一种思路
+   * 105/105 cases passed (68 ms)
+   * Your runtime beats 98.67 % of javascript submissions
+   * Your memory usage beats 76.79 % of javascript submissions (43.8 MB)
+   */
+  // const len = s.length;
+  // const arr = new Array(26).fill(0);
+  // const aCode = 97;
+  // for (let i = 0; i < len; i++) {
+  //   arr[s.charCodeAt(i) - aCode]++;
+  // }
+  // for (let i = 0; i < len; i++) {
+  //   if (arr[s.charCodeAt(i) - aCode] === 1) {
+  //     return i;
+  //   }
+  // }
+  // return -1;
+};
+// @lc code=end
