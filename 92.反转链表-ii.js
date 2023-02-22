@@ -99,30 +99,82 @@ var reverseBetween = function (head, left, right) {
    * Your runtime beats 43.1 % of javascript submissions
    * Your memory usage beats 34.26 % of javascript submissions (41.4 MB)
    */
-  if (left === right) {
-    return head;
-  }
-  const dummyNode = new ListNode(-1);
-  dummyNode.next = head;
-  let cur = head,
-    pre = dummyNode,
-    next = head ? head.next : null,
-    index = 1;
+  // if (left === right) {
+  //   return head;
+  // }
+  // const dummyNode = new ListNode(-1);
+  // dummyNode.next = head;
+  // let cur = head,
+  //   pre = dummyNode,
+  //   next = head ? head.next : null,
+  //   index = 1;
 
-  while (index < right) {
-    if (index >= left) {
-      cur.next = next.next;
-      next.next = pre.next;
-      pre.next = next;
-      next = cur.next;
-    } else {
-      pre = cur;
-      cur = next;
-      next = next.next;
+  // while (index < right) {
+  //   if (index >= left) {
+  //     cur.next = next.next;
+  //     next.next = pre.next;
+  //     pre.next = next;
+  //     next = cur.next;
+  //   } else {
+  //     pre = cur;
+  //     cur = next;
+  //     next = next.next;
+  //   }
+  //   index++;
+  // }
+  // return dummyNode.next;
+
+  /**
+   * 3. 递归
+   * 44/44 cases passed (56 ms)
+   * Your runtime beats 86.88 % of javascript submissions
+   * Your memory usage beats 98.76 % of javascript submissions (40.9 MB)
+   */
+
+  /**
+   * 反转链表前 n 个节点
+   * @param {ListNode} head
+   * @param {Number} n
+   * @return {ListNode}
+   */
+  const reverseN = (head, n) => {
+    if (!head) {
+      return head;
     }
-    index++;
-  }
-  return dummyNode.next;
+    let lastNNode = null;
+    const _reverseN = (head, n) => {
+      if (n === 1) {
+        // 说明递归到了第 n 个节点，然后把第 n + 1 的节点保存起来
+        lastNNode = head.next;
+        return head;
+      }
+      // 以 head.next 为起点，需要反转前 n - 1 个节点
+      const last = _reverseN(head.next, n - 1);
+      // 让头节点的下一个节点指向自己
+      head.next.next = head;
+      // 让反转之后的 head 节点和后面的节点（第 n + 1 个节点）连起来
+      head.next = lastNNode;
+      return last;
+    }
+    return _reverseN(head, n);
+  };
+
+  /**
+   * 回到正题，反转 left 到 right 的节点
+   * 运用 _reverseN ，让 left 节点变成头节点
+   * @param {ListNode} head
+   * @param {Number} left
+   * @param {Number} right
+   * @returns {ListNode}
+   */
+  const _reverseBetween = (head, left, right) => {
+    if (left === 1) {
+      return reverseN(head, right);
+    }
+    head.next = _reverseBetween(head.next, --left, --right);
+    return head;
+  };
+  return _reverseBetween(head, left, right);
 };
 // reverseBetween(b1, 1, 2);
 // @lc code=end
